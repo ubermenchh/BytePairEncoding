@@ -7,8 +7,8 @@ os.makedirs("models", exist_ok=True)
 
 start_time = time.time()
 
-name = "gpt4" # name of tokenizer
-tokenizer = GPTTokenizer("gpt4")
+name = "basic" # name of tokenizer
+tokenizer = BasicTokenizer()
 tokenizer.train(text, 512, verbose=True)
 
 prefix = os.path.join("models", name)

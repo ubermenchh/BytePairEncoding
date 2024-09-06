@@ -14,7 +14,8 @@ class BasicTokenizer(Tokenizer):
         # input text processing 
         # text.encode("utf-8") converts the text into raw bytes
         # then they are converted into list of integers between the range of 0...255
-        ids = list(text.encode("utf-8")) 
+        text_bytes = text.encode("utf-8")
+        ids = list(text_bytes) 
 
         # iteratively merge the most common pair to new token 
         merges = {} # (int, int) -> int 
@@ -49,7 +50,10 @@ class BasicTokenizer(Tokenizer):
     def encode(self, text: str) -> List[int]:
         """ converts a string to list of integers """
 
-        ids = list(text.encode("utf-8")) # converts the token ids to list of integers between 0..255 
+        # converts the token ids to list of integers between 0..255 
+        text_bytes = text.encode("utf-8")
+        ids = list(text_bytes) 
+        
         while len(ids) >= 2:
             stats = get_stats(ids)
             # find the pair with the lowest merge index
@@ -58,7 +62,8 @@ class BasicTokenizer(Tokenizer):
             # the first pair in the list 
             pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
             # if there is nothing else to merge 
-            if pair not in self.merges: break
+            if pair not in self.merges: 
+                break
             # otherwise merge the best pair (lowest merge index)
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)

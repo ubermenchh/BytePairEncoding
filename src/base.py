@@ -47,7 +47,7 @@ def merge(ids: List[int], pair: Tuple[int, int], idx: int) -> List[int]:
 
     new_ids = []
     i = 0
-    while (i < len(ids)):
+    while i < len(ids):
         if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
             new_ids.append(idx)
             i += 2                    
@@ -99,7 +99,7 @@ class Tokenizer:
     
     def _build_vocab(self):
         """ vocab is derived from merges """
-        vocab = {idx: bytes(idx) for idx in range(256)}
+        vocab = {idx: bytes([idx]) for idx in range(256)}
         for (p0, p1), idx in self.merges.items():
             vocab[idx] = vocab[p0] + vocab[p1]
         for special, idx in self.special_tokens.items():
@@ -117,7 +117,7 @@ class Tokenizer:
         model_file = file_prefix + ".model"
         with open(model_file, 'w') as f:
             # write the version, pattern and merges, that's all that's needed
-            f.write("minbpe v1\n")
+            f.write("bpe v1\n")
             f.write(f"{self.pattern}\n")
             # write the special tokens, first the number of them, then each one
             f.write(f"{len(self.special_tokens)}\n")
@@ -159,7 +159,7 @@ class Tokenizer:
         with open(model_file, 'r', encoding="utf-8") as f:
             # read the version
             version = f.readline().strip()
-            assert version == "minbpe v1"
+            assert version == "bpe v1"
             # read the pattern
             self.pattern = f.readline().strip()
             # read the special tokens

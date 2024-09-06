@@ -12,7 +12,7 @@ GPT2_SPLIT_PATTERN = "|".join([
     r"""\s+"""  # matches one or more whitespace anywhere
 ])
 GPT4_SPLIT_PATTERN = "|".join([
-    r"""'(?:[sdmt]|ll|ve|re)""",
+    r"""'(?i:[sdmt]|ll|ve|re)""",
     r"""[^\r\n\p{L}\p{N}]?+\p{L}+""",
     r"""\p{N}{1,3}""",
     r""" ?[^\s\p{L}\p{N}]++[\r\n]*""",
@@ -20,6 +20,7 @@ GPT4_SPLIT_PATTERN = "|".join([
     r"""\s+(?!\S)""",
     r"""\s+"""
 ])
+
 
 class GPTTokenizer(Tokenizer):
     def __init__(self, pattern: Optional[str]=None):
@@ -94,7 +95,8 @@ class GPTTokenizer(Tokenizer):
         while len(ids) >= 2:
             stats = get_stats(ids) 
             pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
-            if pair not in self.merges: break 
+            if pair not in self.merges: 
+                break 
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)
 
@@ -106,7 +108,8 @@ class GPTTokenizer(Tokenizer):
         text_chunks = re.findall(self.compiled_pattern, text)
         ids = []
         for chunk in text_chunks:
-            chunks_ids = self._encode_chunk(chunk.encode("utf-8"))
+            chunk_bytes = chunk.encode("utf-8")
+            chunks_ids = self._encode_chunk(chunk_bytes)
             ids.extend(chunks_ids)
         return ids 
 
