@@ -1,6 +1,5 @@
 import os, time 
-from basic import BasicTokenizer
-from gpt import GPTTokenizer 
+from src import BasicTokenizer, GPTTokenizer 
 
 text = open("input.txt", "r", encoding="utf-8").read()
 
@@ -9,7 +8,7 @@ os.makedirs("models", exist_ok=True)
 start_time = time.time()
 
 name = "gpt4" # name of tokenizer
-tokenizer = GPTTokenizer()
+tokenizer = GPTTokenizer("gpt4")
 tokenizer.train(text, 512, verbose=True)
 
 prefix = os.path.join("models", name)

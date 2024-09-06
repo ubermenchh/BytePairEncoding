@@ -1,4 +1,4 @@
-from base import Tokenizer, get_stats, merge
+from .base import Tokenizer, get_stats, merge
 from typing import List, Dict, Optional
 
 class BasicTokenizer(Tokenizer):

@@ -1,5 +1,5 @@
 from functools import wraps
-from base import Tokenizer, get_stats, merge 
+from .base import Tokenizer, get_stats, merge 
 from typing import Optional, List, Dict
 import regex as re
 
@@ -22,9 +22,14 @@ GPT4_SPLIT_PATTERN = "|".join([
 ])
 
 class GPTTokenizer(Tokenizer):
-    def __init__(self, pattern: Optional[bool]=None):
+    def __init__(self, pattern: Optional[str]=None):
         super().__init__()
-        self.pattern = GPT4_SPLIT_PATTERN if pattern is None else pattern 
+        if pattern is None or pattern == "gpt4":
+            self.pattern = GPT4_SPLIT_PATTERN 
+        elif pattern == "gpt2":
+            self.pattern = GPT2_SPLIT_PATTERN 
+        else:
+            raise ValueError("Invalid pattern type.")
         self.compiled_pattern = re.compile(self.pattern)
         self.special_tokens = {}
         self.inverse_special_tokens = {}
