@@ -1,6 +1,4 @@
-# tokenzzz
-
-## Byte-Pair Encoding
+# Byte-Pair Encoding
 
 - Original Paper: https://arxiv.org/pdf/1508.07909
 - GPT2 Paper: https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf
